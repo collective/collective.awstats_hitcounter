@@ -1,0 +1,16 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:five="http://namespaces.zope.org/five"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    i18n_domain="mfabrik.like">
+
+    <browser:viewlet
+      name="collective.awstats_hitcounter"
+      manager="plone.app.layout.viewlets.interfaces.IBelowContent"
+      template="awstats_hitcounter.pt"
+      layer="collective.awstats_hitcounter.interfaces.ICollectiveAwstatsHitcounterLayer"
+      permission="zope2.View"
+      />
+
+</configure>

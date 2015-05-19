@@ -1,0 +1,21 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    i18n_domain="collective.awstats_hitcounter">
+
+
+    <browser:page
+        name="awstats_hitcounter_view"
+        for="*"
+        permission="zope2.View"
+        class=".views.HitcounterView"
+    />
+
+    <!-- Publish static files -->
+    <browser:resourceDirectory
+        name="collective.awstats_hitcounter"
+        directory="static"
+        />
+
+</configure>

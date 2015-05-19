@@ -1,0 +1,4 @@
+<registry>
+      <records interface="collective.awstats_hitcounter.interfaces.IRegistry" 
+               prefix="awstats_hitcounter" />
+</registry>

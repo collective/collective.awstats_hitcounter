@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<layers>
+  <layer
+    name="collective.awstats_hitcounter"
+    interface="collective.awstats_hitcounter.interfaces.ICollectiveAwstatsHitcounterLayer"
+  />
+</layers>
