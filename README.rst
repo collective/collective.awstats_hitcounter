@@ -1,11 +1,9 @@
-====================
+==================================
 collective.awstats_hitcounter
-====================
+==================================
 
-Installation
----------------
-Usage
----------
+Installation & Usage
+------------------------
 Add collective.awstats_hitcounter to your buildout
 and re-run bin/buildout
 
