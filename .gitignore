@@ -5,6 +5,7 @@
 .mr.developer.cfg
 .project
 .pydevproject
+dist/
 .settings/
 bin/
 buildout-cache/
