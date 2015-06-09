@@ -13,16 +13,25 @@ class HitcounterView(object):
         site = api.portal.get()
         path = self._relative_path()
 
-        views = counter(path, awstat_pattern)
-        content_type = self.context.Type()
-        creation_date = self.context.CreationDate()
-        creation_date = site.toLocalizedTime(creation_date)
- 
-        data = dict(creation_date=creation_date,
-                    total_views = views,
-                    content_type = content_type)
-        json_data = json.dumps(data)
         self.request.response.setHeader("Content-type", "application/json")
+
+        views = counter(path, awstat_pattern)
+        if views <= 0:
+            json_data = json.dumps({'success':'false'})
+        else: 
+            content_type = self.context.Type()
+            creation_date = self.context.CreationDate()
+            creation_date = site.toLocalizedTime(creation_date)
+            modification_date = self.context.modified()
+            modification_date = site.toLocalizedTime(modification_date)
+ 
+            data = dict(success = "true",
+                    creation_date = creation_date,
+                    modification_date = modification_date,
+                    page_views = views,
+                    content_type = content_type)
+            json_data = json.dumps(data)
+
         return json_data
 
     def _relative_path(self):
