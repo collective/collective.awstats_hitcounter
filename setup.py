@@ -19,7 +19,7 @@ long_description = (
 
 setup(
     name='collective.awstats_hitcounter',
-    version='0.1',
+    version='0.1.1',
     description="Grabs hit counts from awstats and returns as json formatted data",
     long_description=long_description,
     # Get more from http://pypi.python.org/pypi?%3Aaction=list_classifiers
@@ -28,6 +28,7 @@ setup(
         "Framework :: Plone",
         "Programming Language :: Python",
         "Programming Language :: Python :: 2.7",
+        "Programming Language :: Python :: 2.6",
     ],
     keywords='Python Plone',
     author='David Bain',
@@ -40,6 +41,7 @@ setup(
     include_package_data=True,
     zip_safe=False,
     install_requires=[
+        'BeautifulSoup',
         'plone.api',
         'requests',
         'setuptools',

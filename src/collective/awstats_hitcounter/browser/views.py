@@ -1,7 +1,6 @@
-import requests
-import lxml.html as LH
-from StringIO import StringIO
 from plone import api
+from utils import counter
+import json
 
 class HitcounterView(object):
 
@@ -9,25 +8,31 @@ class HitcounterView(object):
         """returns the total count based on the query"""
         awstat_pattern = api.portal.get_registry_record(
                        'awstats_hitcounter.awstats_url_pattern')
-     
+        # we depend on a properly configured url pattern
+        # which is in the docs
+        site = api.portal.get()
         path = self._relative_path()
-        hit_url = awstat_pattern.format(path)
-        print hit_url
-        context_path = self.context.getPhysicalPath()
-        r = requests.get(hit_url)
-        tree = LH.parse(StringIO(r.text))
-   
-        total_hits = '0'
 
-        # xpath that checks if this path exists in awstats
-        page_url_count_text = tree.xpath("//th")[0].text_content()
-        page_url_count = page_url_count_text.split(': ')[1].split(' ')[0]
-        page_url_count = int(page_url_count)
-        if page_url_count > 0:
-            # xpath that wrangles the total hits
-            total_hits = tree.xpath("//td")[-5].text
-            return total_hits
-        return total_hits
+        self.request.response.setHeader("Content-type", "application/json")
+
+        views = counter(path, awstat_pattern)
+        if views <= 0:
+            json_data = json.dumps({'success':'false'})
+        else: 
+            content_type = self.context.Type()
+            creation_date = self.context.CreationDate()
+            creation_date = site.toLocalizedTime(creation_date)
+            modification_date = self.context.modified()
+            modification_date = site.toLocalizedTime(modification_date)
+ 
+            data = dict(success = "true",
+                    creation_date = creation_date,
+                    modification_date = modification_date,
+                    page_views = views,
+                    content_type = content_type)
+            json_data = json.dumps(data)
+
+        return json_data
 
     def _relative_path(self):
         """ Get site root relative path to an item
