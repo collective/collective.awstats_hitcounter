@@ -12,7 +12,7 @@
 <div class="span6 collective-awstats-views"> 
 
       <div class="page-info">Page Views:<span class="page-views"></span></div>
-      <div class="page-info"><span class="attachment-downloads"></span></div>
+      <div style="display:none" class="page-info awstats-downloads">Attachments Downloaded:<span class="attachment-downloads"></span></div>
 
 
 </div>
