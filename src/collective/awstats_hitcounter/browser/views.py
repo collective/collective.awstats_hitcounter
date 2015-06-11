@@ -12,9 +12,11 @@ class HitcounterView(object):
         # which is in the docs
         site = api.portal.get()
         path = self._relative_path()
-
+        downloads = None
         self.request.response.setHeader("Content-type", "application/json")
-
+        if self.context.portal_type == "File":
+            downloads = counter("{0}/at_download/file".format(path),
+                                awstat_pattern)
         views = counter(path, awstat_pattern)
         if views <= 0:
             json_data = json.dumps({'success':'false'})
@@ -30,6 +32,8 @@ class HitcounterView(object):
                     modification_date = modification_date,
                     page_views = views,
                     content_type = content_type)
+            if downloads:
+                data['downloads'] = downloads
             json_data = json.dumps(data)
 
         return json_data

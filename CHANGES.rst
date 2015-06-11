@@ -1,6 +1,14 @@
 Changelog
 =========
 
+0.1.2
+----------------
+
+- fixed a problem with the way the path was retrieved
+  [pigeonflight]
+- now counts downloaded attachments different from views
+  [pigeonflight]
+
 0.1.1
 ----------------
 
