@@ -1,6 +1,12 @@
 Changelog
 =========
 
+0.1.3
+----------------
+
+- moved the stats viewlet to the top of the portal footer viewlet manager
+  [pigeonflight]
+
 0.1.2
 ----------------
 
