@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<object>
+ <order manager="plone.app.layout.viewlets.interfaces.IPortalFooter" skinname="Sunburst Theme">
+  <viewlet name="collective.awstats_hitcounter"
+         insert-before="plone.footer" />
+ </order>
+</object>
