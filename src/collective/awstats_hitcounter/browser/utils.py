@@ -50,5 +50,6 @@ def counter(path, pattern, hits=False):
 if __name__ == '__main__':
     pattern = 'http://rmportal.net/awstats/awstats.pl?urlfilter={0}&urlfilterex=&output=urldetail&config=www.rmportal.net'
     path = '/news-events/news-usaid-rmp/farming-gender-neutral-q-a-ann-tutwiler'
+    path = '/'
     print "views:",counter(path,pattern)
     print "hits:",counter(path,pattern,hits=True)
