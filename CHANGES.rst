@@ -1,6 +1,12 @@
 Changelog
 =========
 
+0.1.4
+----------------
+
+- added support for hits (not just page views)
+  [pigeonflight]
+
 0.1.3
 ----------------
 

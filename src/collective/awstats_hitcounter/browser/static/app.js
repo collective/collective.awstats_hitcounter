@@ -23,15 +23,19 @@ $(document).ready(function(){
       "class": "modification-date",
       html: data.modification_date
     }).appendTo( "#awstats_hitcounter .date-modified" );
+    $( "<span/>", {
+      "class": "hits-count-for-pages",
+      html: data.hits.replace(/\B(?=(\d{3})+\b)/g, ",")
+    }).appendTo( "#awstats_hitcounter .page-hits" );
        
     $( "<span/>", {
       "class": "views-count-for-pages",
-      html: data.page_views
+      html: data.page_views.replace(/\B(?=(\d{3})+\b)/g, ",")
     }).appendTo( "#awstats_hitcounter .page-views" );
     if ( data.hasOwnProperty('downloads') ) {
         $( "<span/>", {
           "class": "views-count-for-downloads",
-          html: data.downloads
+          html: data.downloads.replace(/\B(?=(\d{3})+\b)/g, ",")
         }).appendTo( "#awstats_hitcounter .attachment-downloads" );
         $(".page-info.awstats-downloads").show();
 

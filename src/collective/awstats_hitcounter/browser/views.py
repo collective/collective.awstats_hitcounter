@@ -18,6 +18,7 @@ class HitcounterView(object):
             downloads = counter("{0}/at_download/file".format(path),
                                 awstat_pattern)
         views = counter(path, awstat_pattern)
+        hits = counter(path, awstat_pattern, hits=True)
         if views <= 0:
             json_data = json.dumps({'success':'false'})
         else: 
@@ -31,6 +32,7 @@ class HitcounterView(object):
                     creation_date = creation_date,
                     modification_date = modification_date,
                     page_views = views,
+                    hits = hits,
                     content_type = content_type)
             if downloads:
                 data['downloads'] = downloads

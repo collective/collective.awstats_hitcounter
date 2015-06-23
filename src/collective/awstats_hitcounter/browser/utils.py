@@ -3,7 +3,13 @@ import requests
 from BeautifulSoup import BeautifulSoup
 from urlparse import urlparse
 
-def counter(path, pattern):
+def counter(path, pattern, hits=False):
+    """ usage
+    counter(path, pattern)
+    # returns the number of views for a given path
+    counter(path, pattern, hits=True)
+    # returns the number of hits for a given path
+    """
     url = pattern.format(path)
     
     r = requests.get(url)
@@ -15,6 +21,7 @@ def counter(path, pattern):
     # Get all rows after the matched path
     # in the interface
     trs = scrape_pattern_b.findAllNext('tr')
+    hit_count = 0 # only used when tracking hits
 
     for tr in trs:
         tds = tr.findAll('td')
@@ -28,12 +35,20 @@ def counter(path, pattern):
             # return the count in the next column
             # but only if the url matches the 
             # path we're working with
-            if url.path == path:
+            if url.path == path and hits == False:
                 return int(tds[1].text)
+            
+            if hits == True:
+                hit_count = hit_count + int(tds[1].text)
+
+    if hits == True:
+        return hit_count
+
     return 0
 
 # keep this code here so we can do standalone testing
 if __name__ == '__main__':
     pattern = 'http://rmportal.net/awstats/awstats.pl?urlfilter={0}&urlfilterex=&output=urldetail&config=www.rmportal.net'
     path = '/news-events/news-usaid-rmp/farming-gender-neutral-q-a-ann-tutwiler'
-    print counter(path,pattern)
+    print "views:",counter(path,pattern)
+    print "hits:",counter(path,pattern,hits=True)
