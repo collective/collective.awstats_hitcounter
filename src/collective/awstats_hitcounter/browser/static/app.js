@@ -23,19 +23,21 @@ $(document).ready(function(){
       "class": "modification-date",
       html: data.modification_date
     }).appendTo( "#awstats_hitcounter .date-modified" );
+
+    // code for generating commas came from http://stackoverflow.com/a/29026196/642276
     $( "<span/>", {
       "class": "hits-count-for-pages",
-      html: data.hits.replace(/\B(?=(\d{3})+\b)/g, ",")
+      html: data.hits.toString().replace(/\B(?=(\d{3})+\b)/g, ",")
     }).appendTo( "#awstats_hitcounter .page-hits" );
        
     $( "<span/>", {
       "class": "views-count-for-pages",
-      html: data.page_views.replace(/\B(?=(\d{3})+\b)/g, ",")
+      html: data.page_views.toString().replace(/\B(?=(\d{3})+\b)/g, ",")
     }).appendTo( "#awstats_hitcounter .page-views" );
     if ( data.hasOwnProperty('downloads') ) {
         $( "<span/>", {
           "class": "views-count-for-downloads",
-          html: data.downloads.replace(/\B(?=(\d{3})+\b)/g, ",")
+          html: data.downloads.toString().replace(/\B(?=(\d{3})+\b)/g, ",")
         }).appendTo( "#awstats_hitcounter .attachment-downloads" );
         $(".page-info.awstats-downloads").show();
 
