@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<portlets i18n:domain="plone" xmlns:i18n="http://xml.zope.org/namespaces/i18n">
+
+ <!-- Portlet type registrations -->
+
+ <portlet
+   addview="collective.awstats_hitcounter.PopularContentPortlet"
+   title="Popular Content Portlet"
+   description="Popular Content Portlet"
+   i18n:attributes="title"
+   />
+
+</portlets>

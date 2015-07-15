@@ -11,6 +11,7 @@
 
     <include package=".browser" />
     <include package=".viewlet" />
+    <include package=".portlet" />
 
 
     <genericsetup:registerProfile

@@ -1,7 +1,30 @@
 # coding: utf-8
 import requests
-from BeautifulSoup import BeautifulSoup
+from BeautifulSoup import BeautifulSoup, SoupStrainer
 from urlparse import urlparse
+
+blacklist=[
+           '/acl_users/',
+           '/search_rss',
+           '/login_form',
+           '/login',
+           '/request_login_pre',
+           '/search.html',
+           '/request_login',
+           '/search.json',
+           '/RSS',
+           '/search',
+           '/@@flexijson_view',
+           '/@@usergroup-userprefs',
+           '/awstats_hitcounter_view',
+           '/portal_kss/',
+           '/login_failed',
+           '/search_form',
+           '/contact-info',
+           '/@@user',
+           '/@@user-information',
+          ]
+
 
 def counter(path, pattern, hits=False):
     """ usage
@@ -15,7 +38,7 @@ def counter(path, pattern, hits=False):
     r = requests.get(url)
     soup = BeautifulSoup(r.text)
 
-    # scrape the bold text with the pattern on the page
+    # scrape the bold text which contains the path on the page
     scrape_pattern_b = soup.find('b', text=path)
 
     # Get all rows after the matched path
@@ -46,9 +69,25 @@ def counter(path, pattern, hits=False):
 
     return 0
 
+def get_urls(url,blacklist=blacklist):
+    r = requests.get(url)
+    _links = []
+    # Get the links
+    for link in BeautifulSoup(r.text, parseOnlyThese=SoupStrainer('a')):
+        if link.get('target') in ['url',]:
+           _links.append(link['href'])
+    # Filter links 
+    for blacklistitem in blacklist:
+        _links = [linkitem for linkitem in _links 
+               if blacklistitem not in linkitem]
+    return _links[:10]
+
 # keep this code here so we can do standalone testing
 if __name__ == '__main__':
     pattern = 'http://rmportal.net/awstats/awstats.pl?urlfilter={0}&urlfilterex=&output=urldetail&config=www.rmportal.net'
     path = '/news-events/news-usaid-rmp/farming-gender-neutral-q-a-ann-tutwiler'
-    print "views:",counter(path,pattern)
-    print "hits:",counter(path,pattern,hits=True)
+    url = 'http://rmportal.net/awstats/awstats.pl?urlfilterex=&config=www.rmportal.net&framename=mainright&output=urldetail'
+#    print "views:",counter(path,pattern)
+#   print "hits:",counter(path,pattern,hits=True)
+    print get_urls(url) 
+
