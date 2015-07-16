@@ -1,6 +1,7 @@
 import urllib
 import urlparse
 from random import shuffle
+from AccessControl import Unauthorized
 
 from DateTime import DateTime
 from zope.schema.fieldproperty import FieldProperty
@@ -116,7 +117,14 @@ class Renderer(base.Renderer):
         """
         pass #self.imageData = self.compileImageData()
 
-
+    def get_content_by_path(self,path):
+        output = None
+        try:
+            output = api.content.get(path)
+        except Unauthorized:
+            pass
+        return output
+            
     def popular_content(self):
         """
         Return the popular content
@@ -149,8 +157,11 @@ class Renderer(base.Renderer):
         popular_urls_ = popular_urls_remove_imagethumbs  
 
         
-        popular_urls__ = [(api.content.get(path=urlparse.urlparse(p_url).path),p_url) 
-                                     for p_url in popular_urls_]
+        popular_urls__ = [(self.get_content_by_path(urlparse.urlparse(p_url).path),p_url) 
+                                     for p_url in popular_urls_
+                                     if self.get_content_by_path(
+                                          urlparse.urlparse(p_url).path
+                                          )]
 
 
         popular_urls = []
