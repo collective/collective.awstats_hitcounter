@@ -138,6 +138,16 @@ class Renderer(base.Renderer):
                 else:
                     popular_urls_no_downloads.append(p_url)
             popular_urls_ = popular_urls_no_downloads  
+
+        popular_urls_remove_imagethumbs = []
+        for p_url in popular_urls_:
+            if p_url.endswith('/image_thumb'):
+                p_url = p_url.replace('image_thumb', "")
+                popular_urls_remove_imagethumbs.append(p_url)
+            else:
+                popular_urls_remove_imagethumbs.append(p_url)
+        popular_urls_ = popular_urls_remove_imagethumbs  
+
         
         popular_urls__ = [(api.content.get(path=urlparse.urlparse(p_url).path),p_url) 
                                      for p_url in popular_urls_]
@@ -155,7 +165,7 @@ class Renderer(base.Renderer):
                                      'url':p_url[1]})
 
                 except AttributeError:
-                    pass
+                    print "bad url: %s" % p_url[1]
                 
         # if needed limit by the number of items to show parameter
         if len(popular_urls) > items_to_show:
