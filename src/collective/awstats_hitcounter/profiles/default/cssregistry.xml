@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!-- Setup configuration for the portal_css tool. -->
+
+<object name="portal_css">
+
+     <stylesheet
+        id="++resource++popularcontentportlet/style.css"
+        cacheable="True"
+        compression="safe"
+        cookable="True"
+        enabled="1"
+        expression="context/@@awstats_hitcounter.popular_content_portlet_active"
+        media=""
+        rel="stylesheet"
+        rendering="import"
+        insert-after="ploneKss.css" />
+
+</object>

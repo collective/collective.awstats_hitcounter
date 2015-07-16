@@ -11,21 +11,22 @@
 <div class="row-fluid">
 <div class="span6 collective-awstats-views"> 
 
-      <div class="page-info">Page Views:<span class="page-views"></span></div>
+      <div class="page-info page-views">Page Views:<span class="page-views"></span></div>
+      <div class="page-info page-hits">Hits:<span class="hits"></span></div>
       <div style="display:none" class="page-info awstats-downloads">Attachments Downloaded:<span class="attachment-downloads"></span></div>
 
 
 </div>
 <div class="span6 collective-awstats-dates"> 
 
-      <div class="page-info">Date Created:<span class="date-created"></span></div>
-      <div class="page-info">Date Modified:<span class="date-modified"><span></div>
+      <div class="page-info date-created">Date Created:<span class="date-created"></span></div>
+      <div class="page-info date-modified">Date Modified:<span class="date-modified"><span></div>
 
 
 </div>
 </div>
 
- <!-- hit counter goes here -->
+ <!-- counter goes here -->
 </div>
 <script src="++resource++collective.awstats_hitcounter/app.js">
 

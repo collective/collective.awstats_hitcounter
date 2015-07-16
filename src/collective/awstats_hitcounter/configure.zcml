@@ -11,6 +11,8 @@
 
     <include package=".browser" />
     <include package=".viewlet" />
+    <include package=".portlet" />
+    <include file="upgrades.zcml" />
 
 
     <genericsetup:registerProfile
@@ -27,5 +29,6 @@
         description="Post install import step from collective.awstats_hitcounter"
         handler=".setuphandlers.post_install">
     </genericsetup:importStep>
+
 
 </configure>

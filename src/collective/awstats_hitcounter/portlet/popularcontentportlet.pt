@@ -1,0 +1,9 @@
+<ul class="portlet-popular-content-list">
+<tal:block tal:repeat="item view/popular_content">
+<li class="portlet-popular-content-item">
+<a 
+   tal:content="item/title" tal:attributes="href item/url;
+                                            title item/title">title here</a>
+</li>
+</tal:block>
+</ul>

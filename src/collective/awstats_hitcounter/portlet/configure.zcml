@@ -1,0 +1,23 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:five="http://namespaces.zope.org/five"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    i18n_domain="collective.awstats_hitcounter">
+ 
+    <browser:resourceDirectory
+        name="popularcontentportlet"
+        directory="static"
+        />
+
+    <plone:portlet
+      name="collective.awstats_hitcounter.PopularContentPortlet"
+       interface=".portlets.IPopularContentPortlet"
+       assignment=".portlets.Assignment"
+       renderer=".portlets.Renderer"
+       addview=".portlets.AddForm"
+       editview=".portlets.EditForm"
+        />
+
+</configure>

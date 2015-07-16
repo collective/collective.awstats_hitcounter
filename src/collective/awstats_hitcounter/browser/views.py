@@ -1,6 +1,29 @@
 from plone import api
 from utils import counter
 import json
+import Acquisition
+from zope.component import getUtility, getMultiAdapter
+
+from collective.awstats_hitcounter.portlet.portlets import IPopularContentPortlet
+from plone.portlets.interfaces import IPortletRetriever, IPortletManager
+
+class PopularContentPortletActive(object):
+    def __call__(self):
+        """ return true if the popular content portlet is active """
+        for column in ["plone.leftcolumn", "plone.rightcolumn"]:
+
+            manager = getUtility(IPortletManager, name=column)
+            retriever = getMultiAdapter((self.context, manager), IPortletRetriever)
+            portlets = retriever.getPortlets()
+
+        for portlet in portlets:
+        # Identify portlet by interface provided by assignment
+            if IPopularContentPortlet.providedBy(portlet["assignment"]):
+                return True
+
+        return False
+
+
 
 class HitcounterView(object):
 
@@ -18,6 +41,7 @@ class HitcounterView(object):
             downloads = counter("{0}/at_download/file".format(path),
                                 awstat_pattern)
         views = counter(path, awstat_pattern)
+        hits = counter(path, awstat_pattern, hits=True)
         if views <= 0:
             json_data = json.dumps({'success':'false'})
         else: 
@@ -31,6 +55,7 @@ class HitcounterView(object):
                     creation_date = creation_date,
                     modification_date = modification_date,
                     page_views = views,
+                    hits = hits,
                     content_type = content_type)
             if downloads:
                 data['downloads'] = downloads

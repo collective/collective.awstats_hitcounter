@@ -1,0 +1,15 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    i18n_domain="collective.awstats_hitcounter">
+
+      <genericsetup:upgradeStep
+          source="1100"
+          destination="1200"
+          title="Add PopularContent Portlet code"
+          description="Register the PopularContent Portlet Registry"
+          profile="collective.awstats_hitcounter:default"
+          handler=".upgrades.upgrade_1100_to_1200"
+          />
+
+</configure>

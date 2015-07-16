@@ -12,6 +12,13 @@
         class=".views.HitcounterView"
     />
 
+    <browser:page
+        name="awstats_hitcounter.popular_content_portlet_active"
+        for="*"
+        permission="zope2.View"
+        class=".views.PopularContentPortletActive"
+    />
+
     <!-- Publish static files -->
     <browser:resourceDirectory
         name="collective.awstats_hitcounter"
