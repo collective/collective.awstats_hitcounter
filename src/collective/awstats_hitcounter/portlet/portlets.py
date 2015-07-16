@@ -21,7 +21,7 @@ from plone.i18n.normalizer.interfaces import IIDNormalizer
 from collective.awstats_hitcounter.browser.utils import get_urls
 from collective.awstats_hitcounter.browser.utils import blacklist
 
-type_whitelist = ['Page','Link','File']
+type_whitelist = ['News Item','Page','Link','File']
 #import z3cformhelper  # XXX: Import from plone.app.portlets since Plone 4.3
 import z3cformhelper
 
@@ -53,10 +53,6 @@ class IPopularContentPortlet(IPortletDataProvider):
 
     prevent_direct_downloads = schema.Bool(title=_(u"Prevent Direct Downloads"),
                                    description=_(u"Prevent direct download of files"),
-                                   default=True)
-
-    ignore_folders = schema.Bool(title=_(u"Ignore Folders"),
-                                   description=_(u"Don't list folders"),
                                    default=True)
 
     black_list = schema.List(title=_(u"Blacklist"),
