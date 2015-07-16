@@ -84,9 +84,9 @@ def get_urls(url,blacklist=blacklist):
 
 # keep this code here so we can do standalone testing
 if __name__ == '__main__':
-    pattern = 'http://rmportal.net/awstats/awstats.pl?urlfilter={0}&urlfilterex=&output=urldetail&config=www.rmportal.net'
+    pattern = 'http://example.net/awstats/awstats.pl?urlfilter={0}&urlfilterex=&output=urldetail&config=www.example.net'
     path = '/news-events/news-usaid-rmp/farming-gender-neutral-q-a-ann-tutwiler'
-    url = 'http://rmportal.net/awstats/awstats.pl?urlfilterex=&config=www.rmportal.net&framename=mainright&output=urldetail'
+    url = 'http://example.net/awstats/awstats.pl?urlfilterex=&config=www.example.net&framename=mainright&output=urldetail'
 #    print "views:",counter(path,pattern)
 #   print "hits:",counter(path,pattern,hits=True)
     print get_urls(url) 
