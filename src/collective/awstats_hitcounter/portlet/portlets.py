@@ -34,7 +34,7 @@ class IPopularContentPortlet(IPortletDataProvider):
     Define popular content portlet fields.
     """
     portlet_name = schema.TextLine(title=_(u"Portlet Name"),
-                           description=_(u"Add special text here"),
+                           description=_(u"Add the name of the portlet here"),
                            required=True,
                            default=u"")
 
@@ -128,8 +128,11 @@ class Renderer(base.Renderer):
         popular_urls = []
         for p_url in popular_urls__:
             if p_url[0]:
-                popular_urls.append({'title':p_url[0].Title(),
+                try:
+                    popular_urls.append({'title':p_url[0].Title(),
                                      'url':p_url[1]})
+                except AttributeError:
+                    pass
 
         if len(popular_urls) > items_to_show:
             return popular_urls[:items_to_show]
