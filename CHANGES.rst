@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.1.5
+----------------
+
+- added a popular content portlet
+
 0.1.4
 ----------------
 
