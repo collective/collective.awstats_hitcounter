@@ -63,3 +63,5 @@ Decide where in your site you want the portlet to be located and using the 'mana
 
 .. image:: https://raw.githubusercontent.com/collective/collective.awstats_hitcounter/master/configuring_the_portlet.png
    :width: 800 px
+
+Use the **Blacklist** to prevent particular URLs from showing up in popular content.
