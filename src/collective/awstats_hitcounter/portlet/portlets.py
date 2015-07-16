@@ -11,8 +11,9 @@ from zope.component import getMultiAdapter
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
 from plone import api
-from plone.directives import form
+#from plone.directives import form
 from plone.app.portlets.portlets import base
+from plone.portlets.interfaces import IPortletDataProvider
 
 from collective.awstats_hitcounter.browser.utils import get_urls
 from collective.awstats_hitcounter.browser.utils import blacklist
@@ -27,7 +28,8 @@ def _(x):
     return x
 
 
-class IPopularContentPortlet(form.Schema):
+class IPopularContentPortlet(IPortletDataProvider):
+#form.Schema):
     """
     Define popular content portlet fields.
     """
