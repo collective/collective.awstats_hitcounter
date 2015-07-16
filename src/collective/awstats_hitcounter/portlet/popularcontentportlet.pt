@@ -1,9 +1,14 @@
-<ul class="portlet-popular-content-list">
+<div class="portlet-popular-content-list">
+<dl class="portlet portlet-popular-content" 
+       tal:attributes="id view/portlet_id">
+
+<dt class="portletHeader" tal:content="view/title">Popular Content</dt>
 <tal:block tal:repeat="item view/popular_content">
-<li class="portlet-popular-content-item">
-<a 
-   tal:content="item/title" tal:attributes="href item/url;
-                                            title item/title">title here</a>
-</li>
+        <dd class="portletItem odd portlet-popular-content-item">
+        <a tal:content="item/title" class="tile" 
+           tal:attributes="href item/url;
+                           title item/title">title here</a>
+        </dd>
 </tal:block>
-</ul>
+</dl>
+</div>
