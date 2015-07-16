@@ -53,7 +53,7 @@ on your website, based on awstats.
 You will need to provide the url from your awstats installation that provides the full list of Page URLs then follow the link to the "Full list"
 It will look something like this:
 
-.. image:: https:/raw.githubusercontent.com/collective/collective.awstats_hitcounter/master/awstats_fulllist_screenshot.png
+.. image:: https://raw.githubusercontent.com/collective/collective.awstats_hitcounter/master/awstats_fulllist_screenshot.png
    :width: 800 px
 
 Make a note of the url associated with that page, you'll need it when adding the portlet.
@@ -61,5 +61,5 @@ Make a note of the url associated with that page, you'll need it when adding the
 Decide where in your site you want the portlet to be located and using the 'manage portlets' link add a new 'Popular Content Portlet'. You'll see a screen similar to this:
 
 
-.. image:: https:/raw.githubusercontent.com/collective/collective.awstats_hitcounter/master/configuring_the_portlet.png
+.. image:: https://raw.githubusercontent.com/collective/collective.awstats_hitcounter/master/configuring_the_portlet.png
    :width: 800 px
