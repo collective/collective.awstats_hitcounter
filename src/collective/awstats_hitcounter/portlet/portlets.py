@@ -20,7 +20,7 @@ from collective.awstats_hitcounter.browser.utils import blacklist
 
 
 #import z3cformhelper  # XXX: Import from plone.app.portlets since Plone 4.3
-from plone.app.portlets.browser import z3cformhelper
+import z3cformhelper
 
 
 def _(x):
