@@ -14,6 +14,9 @@ from plone import api
 #from plone.directives import form
 from plone.app.portlets.portlets import base
 from plone.portlets.interfaces import IPortletDataProvider
+from zope.component import getUtility
+from plone.i18n.normalizer.interfaces import IIDNormalizer
+
 
 from collective.awstats_hitcounter.browser.utils import get_urls
 from collective.awstats_hitcounter.browser.utils import blacklist
@@ -137,6 +140,16 @@ class Renderer(base.Renderer):
         if len(popular_urls) > items_to_show:
             return popular_urls[:items_to_show]
         return popular_urls
+
+    @property
+    def portlet_id(self):
+        normalizer = getUtility(IIDNormalizer)
+        return "portlet-popular-content-{0}".format(normalizer.normalize(
+                   self.title))
+
+    @property
+    def title(self):
+        return self.data.portlet_name
 
     def getAcquisitionChainedAssigment(self):
         """
