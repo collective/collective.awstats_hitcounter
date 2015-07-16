@@ -45,6 +45,7 @@ setup(
         'plone.api',
         'requests',
         'setuptools',
+        'plone.app.dexterity [grok]',
     ],
     extras_require={
         'test': [
