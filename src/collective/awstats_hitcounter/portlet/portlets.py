@@ -130,10 +130,18 @@ class Renderer(base.Renderer):
         black_list = self.data.black_list
         type_white_list = self.data.type_white_list
         prevent_direct_downloads = self.data.prevent_direct_downloads
-        if prevent_direct_downloads:
-            black_list.append('/at_download/')
 
         popular_urls_ = get_urls(url,black_list)
+
+        if prevent_direct_downloads:
+            popular_urls_no_downloads = []
+            for p_url in popular_urls_:
+                if p_url.endswith('/at_download/file'):
+                    p_url = p_url.replace('at_download/file', "")
+                    popular_urls_no_downloads.append(p_url)
+                else:
+                    popular_urls_no_downloads.append(p_url)
+            popular_urls_ = popular_urls_no_downloads  
         
         popular_urls__ = [(api.content.get(path=urlparse.urlparse(p_url).path),p_url) 
                                      for p_url in popular_urls_]
