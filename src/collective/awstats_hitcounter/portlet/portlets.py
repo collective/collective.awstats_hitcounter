@@ -36,8 +36,8 @@ class IPopularContentPortlet(form.Schema):
                            required=True,
                            default=u"")
 
-    items_to_show = schema.Int(title=_(u"Items to show"),
-                           description=_(u"How many items should be shown in the portlet"),
+    items_to_show = schema.Int(title=_(u"Max Items to show"),
+                           description=_(u"The maximum number of items that should be shown in the portlet"),
                            required=False,
                            default=3)
 
@@ -45,6 +45,10 @@ class IPopularContentPortlet(form.Schema):
                            description=_(u"URL of the awstats page which shows popular content"),
                            required=False,
                            default=u"")
+
+    prevent_direct_downloads = schema.Bool(title=_(u"Prevent Direct Downloads"),
+                                   description=_(u"Prevent direct download of files"),
+                                   default=True)
 
     black_list = schema.List(title=_(u"Blacklist"),
                            description=_(u"List of items that should not be returned as popular content"),
@@ -66,6 +70,7 @@ class Assignment(base.Assignment):
     items_to_show = FieldProperty(IPopularContentPortlet["items_to_show"])
     portlet_name = FieldProperty(IPopularContentPortlet["portlet_name"])
     css = FieldProperty(IPopularContentPortlet["css"])
+    prevent_direct_downloads = FieldProperty(IPopularContentPortlet["prevent_direct_downloads"])
     black_list = FieldProperty(IPopularContentPortlet["black_list"])
     url_of_popular_page = FieldProperty(IPopularContentPortlet["url_of_popular_page"])
  
@@ -104,12 +109,28 @@ class Renderer(base.Renderer):
         """
         Return the popular content
         """
-        url = "http://rmportal.net/awstats/awstats.pl?urlfilterex=&config=www.rmportal.net&framename=mainright&output=urldetail"
-        popular_urls_ = get_urls(url)
+        items_to_show = self.data.items_to_show
+        url = self.data.url_of_popular_page
+        black_list = self.data.black_list
+        prevent_direct_downloads = self.data.prevent_direct_downloads
+        if prevent_direct_downloads:
+            black_list.append('/at_download/')
+
+        popular_urls_ = get_urls(url,black_list)
         
-        popular_urls = [(api.content.get(path=urlparse.urlparse(p_url).path),p_url) 
+        popular_urls__ = [(api.content.get(path=urlparse.urlparse(p_url).path),p_url) 
                                      for p_url in popular_urls_]
 
+
+        # XXX Todo filter out null objects from url list
+        popular_urls = []
+        for p_url in popular_urls__:
+            if p_url[0]:
+                popular_urls.append({'title':p_url[0].Title(),
+                                     'url':p_url[1]})
+
+        if len(popular_urls) > items_to_show:
+            return popular_urls[:items_to_show]
         return popular_urls
 
     def getAcquisitionChainedAssigment(self):

@@ -1,6 +1,29 @@
 from plone import api
 from utils import counter
 import json
+import Acquisition
+from zope.component import getUtility, getMultiAdapter
+
+from collective.awstats_hitcounter.portlet.portlets import IPopularContentPortlet
+from plone.portlets.interfaces import IPortletRetriever, IPortletManager
+
+class PopularContentPortletActive(object):
+    def __call__(self):
+        """ return true if the popular content portlet is active """
+        for column in ["plone.leftcolumn", "plone.rightcolumn"]:
+
+            manager = getUtility(IPortletManager, name=column)
+            retriever = getMultiAdapter((self.context, manager), IPortletRetriever)
+            portlets = retriever.getPortlets()
+
+        for portlet in portlets:
+        # Identify portlet by interface provided by assignment
+            if IPopularContentPortlet.providedBy(portlet["assignment"]):
+                return True
+
+        return False
+
+
 
 class HitcounterView(object):
 
