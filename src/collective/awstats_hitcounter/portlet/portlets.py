@@ -21,7 +21,7 @@ from plone.i18n.normalizer.interfaces import IIDNormalizer
 from collective.awstats_hitcounter.browser.utils import get_urls
 from collective.awstats_hitcounter.browser.utils import blacklist
 
-
+type_whitelist = ['Page','Link','File']
 #import z3cformhelper  # XXX: Import from plone.app.portlets since Plone 4.3
 import z3cformhelper
 
@@ -55,11 +55,21 @@ class IPopularContentPortlet(IPortletDataProvider):
                                    description=_(u"Prevent direct download of files"),
                                    default=True)
 
+    ignore_folders = schema.Bool(title=_(u"Ignore Folders"),
+                                   description=_(u"Don't list folders"),
+                                   default=True)
+
     black_list = schema.List(title=_(u"Blacklist"),
                            description=_(u"List of items that should not be returned as popular content"),
                            required=False,
                            value_type=schema.TextLine(title=_(u"item")),
                            default=blacklist)
+
+    type_white_list = schema.List(title=_(u"Type White List"),
+                           description=_(u"White list of types which should be retrieved as popular content"),
+                           required=False,
+                           value_type=schema.TextLine(title=_(u"item")),
+                           default=type_whitelist)
 
 
     css = schema.TextLine(title=_(u"HTML styling"),
@@ -77,6 +87,7 @@ class Assignment(base.Assignment):
     css = FieldProperty(IPopularContentPortlet["css"])
     prevent_direct_downloads = FieldProperty(IPopularContentPortlet["prevent_direct_downloads"])
     black_list = FieldProperty(IPopularContentPortlet["black_list"])
+    type_white_list = FieldProperty(IPopularContentPortlet["type_white_list"])
     url_of_popular_page = FieldProperty(IPopularContentPortlet["url_of_popular_page"])
  
 
@@ -117,6 +128,7 @@ class Renderer(base.Renderer):
         items_to_show = self.data.items_to_show
         url = self.data.url_of_popular_page
         black_list = self.data.black_list
+        type_white_list = self.data.type_white_list
         prevent_direct_downloads = self.data.prevent_direct_downloads
         if prevent_direct_downloads:
             black_list.append('/at_download/')
@@ -127,16 +139,21 @@ class Renderer(base.Renderer):
                                      for p_url in popular_urls_]
 
 
-        # XXX Todo filter out null objects from url list
         popular_urls = []
         for p_url in popular_urls__:
             if p_url[0]:
+            # Check against white list while filtering out objects which
+            # don't have titles
                 try:
-                    popular_urls.append({'title':p_url[0].Title(),
+                     
+                    if p_url[0].Type() in type_whitelist:
+                        popular_urls.append({'title':p_url[0].Title(),
                                      'url':p_url[1]})
+
                 except AttributeError:
                     pass
-
+                
+        # if needed limit by the number of items to show parameter
         if len(popular_urls) > items_to_show:
             return popular_urls[:items_to_show]
         return popular_urls
