@@ -65,3 +65,5 @@ Decide where in your site you want the portlet to be located and using the 'mana
    :width: 800 px
 
 Use the **Blacklist** to prevent particular URLs from showing up in popular content.
+
+Use the **White list** to specify what content types are allowed in the portlet.
