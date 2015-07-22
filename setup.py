@@ -19,7 +19,7 @@ long_description = (
 
 setup(
     name='collective.awstats_hitcounter',
-    version='0.1.4',
+    version='0.1.5',
     description="Grabs hit counts from awstats and returns as json formatted data",
     long_description=long_description,
     # Get more from http://pypi.python.org/pypi?%3Aaction=list_classifiers

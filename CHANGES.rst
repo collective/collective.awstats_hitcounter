@@ -1,6 +1,14 @@
 Changelog
 =========
 
+0.1.5
+----------------
+
+- added a popular content portlet
+- added a content type whitelist to the portlet
+- added a url black list to the portlet
+- added an option to filter out direct downloads from the portlet
+
 0.1.4
 ----------------
 
