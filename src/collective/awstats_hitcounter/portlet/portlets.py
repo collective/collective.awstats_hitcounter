@@ -42,28 +42,39 @@ class IPopularContentPortlet(IPortletDataProvider):
                            required=True,
                            default=u"")
 
+    
+    read_from_the_global_registry = schema.Bool(title=_(u"Read settings from the global registry"),
+                                   description=_(u"""Check this if you want to inherit from the global registry"""),
+                                   default=True)
+
     items_to_show = schema.Int(title=_(u"Max Items to show"),
                            description=_(u"The maximum number of items that should be shown in the portlet"),
                            required=False,
                            default=3)
 
     url_of_popular_page = schema.TextLine(title=_(u"awstats popular content page"),
-                           description=_(u"URL of the awstats page which shows popular content"),
+                           description=_(u"""URL of the awstats page which shows popular content 
+                                           (leave blank to read from the global registry)"""),
                            required=False,
                            default=u"")
 
     prevent_direct_downloads = schema.Bool(title=_(u"Prevent Direct Downloads"),
-                                   description=_(u"Prevent direct download of files"),
+                                   description=_(u"""Prevent direct download of files 
+                        (if set to false, make sure it is also false in the global registry)"""),
                                    default=True)
 
     black_list = schema.List(title=_(u"Blacklist"),
-                           description=_(u"List of items that should not be returned as popular content"),
+                           description=_(u"""List of items that should not be returned as popular content
+                                        (If set, this will override the global registry) 
+                                         """),
                            required=False,
                            value_type=schema.TextLine(title=_(u"item")),
                            default=blacklist)
 
     type_white_list = schema.List(title=_(u"Type White List"),
-                           description=_(u"White list of types which should be retrieved as popular content"),
+                           description=_(u"""White list of types which should be retrieved as popular content
+                                        (If set, this will override the global registry) 
+                                         """),
                            required=False,
                            value_type=schema.TextLine(title=_(u"item")),
                            default=type_whitelist)
@@ -86,6 +97,7 @@ class Assignment(base.Assignment):
     black_list = FieldProperty(IPopularContentPortlet["black_list"])
     type_white_list = FieldProperty(IPopularContentPortlet["type_white_list"])
     url_of_popular_page = FieldProperty(IPopularContentPortlet["url_of_popular_page"])
+    read_from_the_global_registry = FieldProperty(IPopularContentPortlet["read_from_the_global_registry"])
  
 
     def __init__(self, **kwargs):
@@ -100,7 +112,7 @@ class Assignment(base.Assignment):
     @property
     def title(self):
         """
-        Be smart as what show as the management interface title.
+        Be smart about what to show as the management interface title.
         """
         entries = [self.portlet_name, u"Popular Content portlet"]
         for e in entries:
@@ -134,8 +146,24 @@ class Renderer(base.Renderer):
         black_list = self.data.black_list
         type_white_list = self.data.type_white_list
         prevent_direct_downloads = self.data.prevent_direct_downloads
-
+        read_from_the_global_registry = self.data.read_from_the_global_registry
         popular_urls_ = get_urls(url,black_list)
+
+
+        # The following values are available via the global registry:
+        # url_of_popular_page,prevent_direct_downloads
+        # black_list,type_white_list
+        
+        if read_from_global_registry:
+           url_of_popular_page = api.portal.get_registry_record(
+                            'awstats_hitcounter.url_of_popular_page')
+           prevent_direct_downloads = api.portal.get_registry_record(
+                            'awstats_hitcounter.prevent_direct_downloads')
+           black_list = api.portal.get_registry_record(
+                            'awstats_hitcounter.black_list')
+           type_white_list = api.portal.get_registry_record(
+                            'awstats_hitcounter.type_white_list')
+ 
 
         if prevent_direct_downloads:
             popular_urls_no_downloads = []
@@ -178,7 +206,7 @@ class Renderer(base.Renderer):
                 except AttributeError:
                     print "bad url: %s" % p_url[1]
                 
-        # if needed limit by the number of items to show parameter
+        # if needed limit by the number of "items to show" parameter
         if len(popular_urls) > items_to_show:
             return popular_urls[:items_to_show]
         return popular_urls
