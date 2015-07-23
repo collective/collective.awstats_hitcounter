@@ -6,6 +6,8 @@ from zope import schema
 from zope.interface import Interface
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 
+from collective.awstats_hitcounter.browser.utils import blacklist
+from collective.awstats_hitcounter.browser.utils import type_whitelist
 
 class ICollectiveAwstatsHitcounterLayer(IDefaultBrowserLayer):
     """Marker interface that defines a browser layer."""
