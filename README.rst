@@ -30,6 +30,25 @@ Set the absolute url to look similar to this:
 .. image:: https://raw.githubusercontent.com/collective/collective.awstats_hitcounter/master/configure_url.png
    :width: 800 px
 
+Configuring the Popular Content settings for the popular_content_view
+````````````````````````````````````````````````````````````````````````````
+
+In order to make use of the built in @@popular_content_view you will need to register an "awstats popular page"
+
+
+If you need to find the "awstats popular page" you will need to provide the url from your awstats installation that provides the full 
+list of Page URLs then follow the link to the "Full list"
+It will look something like this:
+
+.. image:: https://raw.githubusercontent.com/collective/collective.awstats_hitcounter/master/awstats_fulllist_screenshot.png
+   :width: 800 px
+
+Add that url as the `awstats_hitcounter url_of_popular_page` value (see the image below).
+
+.. image:: https://raw.githubusercontent.com/collective/collective.awstats_hitcounter/master/portal_registry.png
+   :width: 800 px
+
+
 Usage
 ---------
 
@@ -47,21 +66,31 @@ The screenshot below illustrates the expected behaviour
 The Popular Content Portlet
 ````````````````````````````
 
-The popular content portlet is used to present the most popular content
+This add-on provides a "Popular Content Portlet". It can either make use of the global settings or use settings
+specific to the portlet.
+
+The portlet is used to present the most popular content
 on your website, based on awstats.
 
-You will need to provide the url from your awstats installation that provides the full list of Page URLs then follow the link to the "Full list"
+
+If you prefer to configure all settings in the context of the portlet, you will need to provide the url from your 
+awstats installation that provides the full list of Page URLs then follow the link to the "Full list"
 It will look something like this:
 
 .. image:: https://raw.githubusercontent.com/collective/collective.awstats_hitcounter/master/awstats_fulllist_screenshot.png
    :width: 800 px
 
-Make a note of the url associated with that page, you'll need it when adding the portlet.
+Copy the url associated with that page, you'll need it when adding the portlet.
 
 Decide where in your site you want the portlet to be located and using the 'manage portlets' link add a new 'Popular Content Portlet'. You'll see a screen similar to this:
 
 
 .. image:: https://raw.githubusercontent.com/collective/collective.awstats_hitcounter/master/configuring_the_portlet.png
+   :width: 800 px
+
+You can select `read settings from the global registry` and this will override the settings highlighted in orange below.
+
+.. image:: https://raw.githubusercontent.com/collective/collective.awstats_hitcounter/master/configuring_the_portlet-global-registry.png
    :width: 800 px
 
 Use the **Blacklist** to prevent particular URLs from showing up in popular content.
