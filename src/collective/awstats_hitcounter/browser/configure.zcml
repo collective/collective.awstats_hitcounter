@@ -6,6 +6,14 @@
 
 
     <browser:page
+        name="popular_content_view"
+        for="*"
+        template="popular_content_view.pt"
+        permission="zope2.View"
+        class=".views.PopularContentView"
+    />
+ 
+    <browser:page
         name="awstats_hitcounter_view"
         for="*"
         permission="zope2.View"

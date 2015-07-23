@@ -1,0 +1,29 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="collective.awstats_hitcounter">
+<body>
+<div metal:fill-slot="top_slot" 
+              tal:define="dummy python:request.set('disable_border', 1)" /> 
+
+<metal:content fill-slot="main">
+<div class="popular-content-items">
+  <h3>Popular Content</h3>
+   <ul>
+    <tal:block tal:repeat="item view/popular_content_items">
+        <li class="portletItem odd portlet-popular-content-item">
+        <a tal:content="item/title" class="tile" 
+           tal:attributes="href item/url;
+                           title item/title">title here</a>
+        </li>
+    </tal:block>
+   </ul>
+</div>
+
+
+</metal:content>
+</body>
+</html>

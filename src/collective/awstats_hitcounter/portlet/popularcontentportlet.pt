@@ -10,5 +10,8 @@
                            title item/title">title here</a>
         </dd>
 </tal:block>
+<dd class="portletFooter">
+   <a href="@@popular_content_view">View More</a>
+</dd>
 </dl>
 </div>

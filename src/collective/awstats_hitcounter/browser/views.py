@@ -7,6 +7,9 @@ from zope.component import getUtility, getMultiAdapter
 from collective.awstats_hitcounter.portlet.portlets import IPopularContentPortlet
 from plone.portlets.interfaces import IPortletRetriever, IPortletManager
 
+from collective.awstats_hitcounter.browser.utils import filter_urls
+from collective.awstats_hitcounter.browser.utils import get_urls
+
 class PopularContentPortletActive(object):
     def __call__(self):
         """ return true if the popular content portlet is active """
@@ -78,3 +81,32 @@ class HitcounterView(object):
         relative_path = context_path[len(site_path):]
     
         return "/" + "/".join(relative_path)
+
+class PopularContentView(object):
+
+    @property
+    def popular_content_items(self):
+        """
+        Return the popular content
+        for the browser view
+        """
+        # The following values are available via the global registry:
+        # url_of_popular_page,prevent_direct_downloads
+        # black_list,type_white_list
+        
+        url_of_popular_page = api.portal.get_registry_record(
+                            'awstats_hitcounter.url_of_popular_page')
+        prevent_direct_downloads = api.portal.get_registry_record(
+                            'awstats_hitcounter.prevent_direct_downloads')
+        black_list = api.portal.get_registry_record(
+                            'awstats_hitcounter.black_list')
+        type_white_list = api.portal.get_registry_record(
+                            'awstats_hitcounter.type_white_list')
+ 
+
+        popular_urls = get_urls(url_of_popular_page,black_list)
+ 
+        return filter_urls(
+                   popular_urls,type_white_list=type_white_list,
+                   prevent_direct_downloads=prevent_direct_downloads
+                    )

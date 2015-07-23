@@ -1,7 +1,7 @@
 import urllib
-import urlparse
+from urlparse import urlparse
 from random import shuffle
-from AccessControl import Unauthorized
+# from AccessControl import Unauthorized
 
 from DateTime import DateTime
 from zope.schema.fieldproperty import FieldProperty
@@ -19,10 +19,11 @@ from zope.component import getUtility
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 
 
+from collective.awstats_hitcounter.browser.utils import filter_urls
 from collective.awstats_hitcounter.browser.utils import get_urls
 from collective.awstats_hitcounter.browser.utils import blacklist
+from collective.awstats_hitcounter.browser.utils import type_whitelist
 
-type_whitelist = ['News Item','Page','Link','File']
 #import z3cformhelper  # XXX: Import from plone.app.portlets since Plone 4.3
 import z3cformhelper
 
@@ -33,7 +34,6 @@ def _(x):
 
 
 class IPopularContentPortlet(IPortletDataProvider):
-#form.Schema):
     """
     Define popular content portlet fields.
     """
@@ -42,28 +42,39 @@ class IPopularContentPortlet(IPortletDataProvider):
                            required=True,
                            default=u"")
 
+    
+    read_from_the_global_registry = schema.Bool(title=_(u"Read settings from the global registry"),
+                                   description=_(u"""Check this if you want to inherit from the global registry"""),
+                                   default=True)
+
     items_to_show = schema.Int(title=_(u"Max Items to show"),
                            description=_(u"The maximum number of items that should be shown in the portlet"),
                            required=False,
                            default=3)
 
     url_of_popular_page = schema.TextLine(title=_(u"awstats popular content page"),
-                           description=_(u"URL of the awstats page which shows popular content"),
+                           description=_(u"""URL of the awstats page which shows popular content 
+                                           (leave blank to read from the global registry)"""),
                            required=False,
                            default=u"")
 
     prevent_direct_downloads = schema.Bool(title=_(u"Prevent Direct Downloads"),
-                                   description=_(u"Prevent direct download of files"),
+                                   description=_(u"""Prevent direct download of files 
+                        (if set to false, make sure it is also false in the global registry)"""),
                                    default=True)
 
     black_list = schema.List(title=_(u"Blacklist"),
-                           description=_(u"List of items that should not be returned as popular content"),
+                           description=_(u"""List of items that should not be returned as popular content
+                                        (If set, this will override the global registry) 
+                                         """),
                            required=False,
                            value_type=schema.TextLine(title=_(u"item")),
                            default=blacklist)
 
     type_white_list = schema.List(title=_(u"Type White List"),
-                           description=_(u"White list of types which should be retrieved as popular content"),
+                           description=_(u"""White list of types which should be retrieved as popular content
+                                        (If set, this will override the global registry) 
+                                         """),
                            required=False,
                            value_type=schema.TextLine(title=_(u"item")),
                            default=type_whitelist)
@@ -86,6 +97,7 @@ class Assignment(base.Assignment):
     black_list = FieldProperty(IPopularContentPortlet["black_list"])
     type_white_list = FieldProperty(IPopularContentPortlet["type_white_list"])
     url_of_popular_page = FieldProperty(IPopularContentPortlet["url_of_popular_page"])
+    read_from_the_global_registry = FieldProperty(IPopularContentPortlet["read_from_the_global_registry"])
  
 
     def __init__(self, **kwargs):
@@ -100,7 +112,7 @@ class Assignment(base.Assignment):
     @property
     def title(self):
         """
-        Be smart as what show as the management interface title.
+        Be smart about what to show as the management interface title.
         """
         entries = [self.portlet_name, u"Popular Content portlet"]
         for e in entries:
@@ -117,6 +129,7 @@ class Renderer(base.Renderer):
         """
         pass #self.imageData = self.compileImageData()
 
+
     def get_content_by_path(self,path):
         output = None
         try:
@@ -124,6 +137,7 @@ class Renderer(base.Renderer):
         except Unauthorized:
             pass
         return output
+
             
     def popular_content(self):
         """
@@ -134,54 +148,25 @@ class Renderer(base.Renderer):
         black_list = self.data.black_list
         type_white_list = self.data.type_white_list
         prevent_direct_downloads = self.data.prevent_direct_downloads
+        read_from_the_global_registry = self.data.read_from_the_global_registry
 
-        popular_urls_ = get_urls(url,black_list)
+        if read_from_the_global_registry:
+            url = api.portal.get_registry_record(
+                            'awstats_hitcounter.url_of_popular_page')
 
-        if prevent_direct_downloads:
-            popular_urls_no_downloads = []
-            for p_url in popular_urls_:
-                if p_url.endswith('/at_download/file'):
-                    p_url = p_url.replace('at_download/file', "")
-                    popular_urls_no_downloads.append(p_url)
-                else:
-                    popular_urls_no_downloads.append(p_url)
-            popular_urls_ = popular_urls_no_downloads  
+        popular_urls = get_urls(url,black_list)
 
-        popular_urls_remove_imagethumbs = []
-        for p_url in popular_urls_:
-            if p_url.endswith('/image_thumb'):
-                p_url = p_url.replace('image_thumb', "")
-                popular_urls_remove_imagethumbs.append(p_url)
-            else:
-                popular_urls_remove_imagethumbs.append(p_url)
-        popular_urls_ = popular_urls_remove_imagethumbs  
+        # The following values are available via the global registry:
+        # url_of_popular_page,prevent_direct_downloads
+        # black_list,type_white_list
+        return filter_urls(
+                   popular_urls,type_white_list=type_white_list,
+                   items_to_show=items_to_show,
+                   prevent_direct_downloads=prevent_direct_downloads,
+                   read_from_the_global_registry=read_from_the_global_registry
+                    )
 
         
-        popular_urls__ = [(self.get_content_by_path(urlparse.urlparse(p_url).path),p_url) 
-                                     for p_url in popular_urls_
-                                     if self.get_content_by_path(
-                                          urlparse.urlparse(p_url).path
-                                          )]
-
-
-        popular_urls = []
-        for p_url in popular_urls__:
-            if p_url[0]:
-            # Check against white list while filtering out objects which
-            # don't have titles
-                try:
-                     
-                    if p_url[0].Type() in type_whitelist:
-                        popular_urls.append({'title':p_url[0].Title(),
-                                     'url':p_url[1]})
-
-                except AttributeError:
-                    print "bad url: %s" % p_url[1]
-                
-        # if needed limit by the number of items to show parameter
-        if len(popular_urls) > items_to_show:
-            return popular_urls[:items_to_show]
-        return popular_urls
 
     @property
     def portlet_id(self):
