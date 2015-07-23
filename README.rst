@@ -88,7 +88,9 @@ Decide where in your site you want the portlet to be located and using the 'mana
 .. image:: https://raw.githubusercontent.com/collective/collective.awstats_hitcounter/master/configuring_the_portlet.png
    :width: 800 px
 
-You can select `read settings from the global registry` and this will override the settings highlighted in orange below.
+We recommend that you leave the "Read settings from the global registry" option selected, this has the effect of 
+overriding the values of the settings highlighted in orange below.
+(The global registry is also used for the Popular content view).
 
 .. image:: https://raw.githubusercontent.com/collective/collective.awstats_hitcounter/master/configuring_the_portlet-global-registry.png
    :width: 800 px
