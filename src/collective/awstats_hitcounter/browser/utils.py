@@ -1,5 +1,6 @@
 # coding: utf-8
 import requests
+from os import getenv
 from AccessControl import Unauthorized
 from BeautifulSoup import BeautifulSoup, SoupStrainer
 from urlparse import urlparse
@@ -72,7 +73,7 @@ def counter(path, pattern, hits=False):
 
     return 0
 
-def get_urls(url,blacklist=blacklist):
+def get_urls(url,blacklist=blacklist,limit=10):
     r = requests.get(url)
     _links = []
     # Get the links
@@ -83,7 +84,8 @@ def get_urls(url,blacklist=blacklist):
     for blacklistitem in blacklist:
         _links = [linkitem for linkitem in _links 
                if blacklistitem not in linkitem]
-    return _links[:10]
+    if limit:
+        return _links[:limit]
 
 
 def filter_urls(urls,type_white_list=type_whitelist,items_to_show=None,
@@ -121,6 +123,8 @@ def filter_urls(urls,type_white_list=type_whitelist,items_to_show=None,
             popular_urls_remove_imagethumbs.append(p_url)
     urls = popular_urls_remove_imagethumbs  
 
+    if getenv('DUMP_RAW_AWSTATS_URLS',None):
+        return [{'title':url,'url':url} for url in urls]
     popular_urls_ = [(get_content_by_path(urlparse(p_url).path),p_url) 
                          for p_url in urls
                              if get_content_by_path(

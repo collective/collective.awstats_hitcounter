@@ -1,6 +1,14 @@
 Changelog
 =========
 
+0.1.6
+------------
+
+- add on listens for the existence of the env var DUMP_RAW_AWSTATS_URLS,
+  useful for testing and troubleshooting
+- @@popular_content_view can now be configured to say how many items should show
+  on the page. This setting is managed in the registry. The default value is 150.
+  
 0.1.5
 ----------------
 

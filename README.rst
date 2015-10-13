@@ -48,6 +48,23 @@ Add that url as the `awstats_hitcounter url_of_popular_page` value (see the imag
 .. image:: https://raw.githubusercontent.com/collective/collective.awstats_hitcounter/master/portal_registry.png
    :width: 800 px
 
+Debugging with DUMP_RAW_AWSTATS_URLS
+---------------------------------------
+
+Sometimes you want to make sure things are working.
+The following can be done on a non-production server. 
+
+DO NOT DO THIS ON A PRODUCTION SERVER.
+
+Launch the instance with the env var DUMP_RAW_AWSTATS_URLS as follows::
+
+    DUMP_RAW_AWSTATS_URLS=1 bin/instance fg 
+
+This tells the system to skip comparing awstats values to the site catalog.
+Effectively you'll just get a 'raw' dump of the URLs returned from AWSTATS.
+This is very useful for troubleshooting and diagnosing if scraping is working
+at all.
+
 
 Usage
 ---------

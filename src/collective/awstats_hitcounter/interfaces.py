@@ -28,6 +28,10 @@ class IRegistry(Interface):
     prevent_direct_downloads = schema.Bool(title=_(u"Prevent Direct Downloads"),
                                    description=_(u"Prevent direct download of files"),
                                    default=True)
+                                   
+    view_more_item_count = schema.Int(title=_(u"view more item count"),
+                                   description=_(u"Number of items to show on View More page"),
+                                   default=150)
 
     black_list = schema.List(title=_(u"Blacklist"),
                            description=_(u"List of items that should not be returned as popular content"),

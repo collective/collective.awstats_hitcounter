@@ -102,9 +102,14 @@ class PopularContentView(object):
                             'awstats_hitcounter.black_list')
         type_white_list = api.portal.get_registry_record(
                             'awstats_hitcounter.type_white_list')
+        view_more_item_count = api.portal.get_registry_record(
+                            'awstats_hitcounter.view_more_item_count')
+
  
 
-        popular_urls = get_urls(url_of_popular_page,black_list)
+        popular_urls = get_urls(url_of_popular_page,
+                            black_list,
+                            limit=view_more_item_count)
  
         return filter_urls(
                    popular_urls,type_white_list=type_white_list,
